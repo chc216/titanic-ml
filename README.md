@@ -25,9 +25,11 @@
 * 특이사항
   * 핸즈온 머신러닝 2장 적용
 
-| 버전                       | 사용 피처 | CV | LB |
-|--------------------------|---------------|-----|----|
-| v1 - logistic regression | Age, Parch, Pclass, Sex | 0.7893 | - |
-| v1 - random forest | 위와 동일 | 0.7893 | - |
-
+| 버전                       | 사용 피처                  | CV(k-fold) | LB |
+|--------------------------|------------------------|------------|----|
+| v1 - logistic regression | Age, Parch, Pclass, Sex | 0.7893     | -  |
+| v1 - random forest       | 위와 동일                  | 0.7893     | -  |
+| v2 - logistic regression | v1에서 Age를 범주형으로 변경     | 0.8019     | -  |
+| v2 - random forest       | 위와 동일                  | 0.8047     | -  |
+|                          |                        |            |    |
 
