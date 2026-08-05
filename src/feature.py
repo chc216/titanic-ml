@@ -203,6 +203,54 @@ def prep_v5():
 
     age_transformer = FunctionTransformer(bin_age)
     age_pipeline = Pipeline([("imputer", SimpleImputer(strategy="median")),
+                             ("transformer", age_transformer), ])
+
+    parch_transformer = FunctionTransformer(to_binary_cat)
+    parch_pipeline = Pipeline([
+        ("imputer", SimpleImputer(strategy="median")),
+        ("transformer", parch_transformer)
+    ])
+    num_pipeline = Pipeline([("imputer", SimpleImputer(strategy="median"))])
+
+    cat_pipeline = Pipeline([
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("onehot", OneHotEncoder())
+    ])
+    return ColumnTransformer([
+        ("num", num_pipeline, pclass),
+        ("parch", parch_pipeline, parch),
+        ("cat", cat_pipeline, cat),
+        ("age", age_pipeline, age),
+        ("name", name_pipeline, cat_name),
+        ("has_cabin", cabin_pipeline, cabin)
+    ])
+
+
+def prep_v5_2():
+    age = ["Age"]
+    parch = ["Parch"]
+    pclass = ["Pclass"]
+    cat = ["Sex"]
+    cat_name = ["Name"]
+    cabin = ["Cabin"]
+
+
+    ## 객실 특성 변환 과정
+    # 1. 결측치는 모두 N으로 처리한다. 2. 나머지는 모두 1로 처리한다. -> 원핫 인코딩을 해본다.
+    cabin_transformer = FunctionTransformer(extract_cabin_to_binary)
+    cabin_pipeline = Pipeline([
+        ("transformer", cabin_transformer),
+        ("onehot", OneHotEncoder())
+    ])
+
+    name_transformer = FunctionTransformer(extract_title)
+    name_pipeline = Pipeline([
+        ("transformer", name_transformer),
+        ("onehot", OneHotEncoder())
+    ])
+
+    age_transformer = FunctionTransformer(bin_age)
+    age_pipeline = Pipeline([("imputer", SimpleImputer(strategy="median")),
                              ("scaler", StandardScaler()), ])
 
     parch_transformer = FunctionTransformer(to_binary_cat)
@@ -224,3 +272,95 @@ def prep_v5():
         ("name", name_pipeline, cat_name),
         ("has_cabin", cabin_pipeline, cabin)
     ])
+
+def prep_v6():
+    num_age = ["Age"]
+    cat_parch = ["Parch"]
+    num_pclass = ["Pclass"]
+    cat_sex = ["Sex"]
+    cat_name = ["Name"]
+    cat_cabin = ["Cabin"]
+
+
+    cabin_transformer = FunctionTransformer(extract_cabin_to_binary)
+    cabin_pipeline = Pipeline([
+        ("transformer", cabin_transformer),
+        ("onehot", OneHotEncoder())
+    ])
+
+    name_transformer = FunctionTransformer(extract_title)
+    name_pipeline = Pipeline([
+        ("transformer", name_transformer),
+        ("onehot", OneHotEncoder())
+    ])
+
+    age_transformer = FunctionTransformer(bin_age)
+    age_pipeline = Pipeline([("imputer", SimpleImputer(strategy="median")),
+                             ("scaler", StandardScaler()), ])
+
+    parch_transformer = FunctionTransformer(to_binary_cat)
+    parch_pipeline = Pipeline([
+        ("imputer", SimpleImputer(strategy="median")),
+        ("transformer", parch_transformer)
+    ])
+    pclass_pipeline = Pipeline([("imputer", SimpleImputer(strategy="median"))])
+
+    sex_pipeline = Pipeline([
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("onehot", OneHotEncoder())
+    ])
+    return ColumnTransformer([
+        ("pclass", pclass_pipeline, num_pclass),
+        ("parch", parch_pipeline, cat_parch),
+        ("sex", sex_pipeline, cat_sex),
+        ("age", age_pipeline, num_age),
+        ("name", name_pipeline, cat_name),
+        ("has_cabin", cabin_pipeline, cat_cabin)
+    ])
+
+
+def prep_v7():
+    num_age = ["Age"]
+    num_parch = ["Parch"]
+    num_pclass = ["Pclass"]
+    cat_sex = ["Sex"]
+    cat_name = ["Name"]
+    cat_cabin = ["Cabin"]
+
+
+    cabin_transformer = FunctionTransformer(extract_cabin_to_binary)
+    cabin_pipeline = Pipeline([
+        ("transformer", cabin_transformer),
+        ("onehot", OneHotEncoder())
+    ])
+
+    name_transformer = FunctionTransformer(extract_title)
+    name_pipeline = Pipeline([
+        ("transformer", name_transformer),
+        ("onehot", OneHotEncoder())
+    ])
+
+    age_transformer = FunctionTransformer(bin_age)
+    age_pipeline = Pipeline([("imputer", SimpleImputer(strategy="median")),
+                             ("scaler", StandardScaler()), ])
+
+    parch_transformer = FunctionTransformer(to_binary_cat)
+    parch_pipeline = Pipeline([
+        ("imputer", SimpleImputer(strategy="median")),
+        ("scaler", StandardScaler())
+    ])
+    pclass_pipeline = Pipeline([("imputer", SimpleImputer(strategy="median"))])
+
+    sex_pipeline = Pipeline([
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("onehot", OneHotEncoder())
+    ])
+    return ColumnTransformer([
+        ("pclass", pclass_pipeline, num_pclass),
+        ("parch", parch_pipeline, num_parch),
+        ("sex", sex_pipeline, cat_sex),
+        ("age", age_pipeline, num_age),
+        ("name", name_pipeline, cat_name),
+        ("has_cabin", cabin_pipeline, cat_cabin)
+    ])
+
