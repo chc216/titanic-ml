@@ -2,3 +2,5 @@
 .idea/vcs.xml
 .DS_Store
 .idea/
+*.pkl
+__pycache__/
